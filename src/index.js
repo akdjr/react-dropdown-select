@@ -94,20 +94,9 @@ export class Select extends Component {
   }
 
   componentDidMount() {
-    if (this.props.portal)  {
-      console.log('SELECT: adding portal');
-    } else {
-      console.log('SELECT: no portal');
-    }
     this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     isomorphicWindow().addEventListener('resize', debounce(this.updateSelectBounds));
     
-
-    if (this.props.scrollContainer)  {
-      console.log('SELECT: scrollContainer');
-    } else {
-      console.log('SELECT: no scroll container');
-    }
     if (this.props.scrollContainer) {
       this.props.scrollContainer.addEventListener('scroll', debounce(this.onScroll));
     } else {
@@ -163,12 +152,18 @@ export class Select extends Component {
       this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     }
 
+    if (!this.props.portal && prevProps.portal !== this.props.portal) {
+      this.props.portal && this.props.portal.removeChild(this.dropdownRoot);
+    }
+
     if (this.props.scrollContainer && prevProps.scrollContainer !== this.props.scrollContainer)  {
       this.props.scrollContainer.addEventListener('scroll', debounce(this.onScroll));
+      isomorphicWindow().removeEventListener('scroll', debounce(this.onScroll, this.props.debounceDelay));
     }
 
     if (!this.props.scrollContainer && prevProps.scrollContainer !== this.props.scrollContainer)  {
       this.props.scrollContainer.removeEventListener('scroll', debounce(this.onScroll));
+      isomorphicWindow().addEventListener('scroll', debounce(this.onScroll));
     }
   }
 
@@ -178,6 +173,7 @@ export class Select extends Component {
       'resize',
       debounce(this.updateSelectBounds, this.props.debounceDelay)
     );
+
     if (this.props.scrollContainer) {
       this.props.scrollContainer.removeEventListener('scroll', debounce(this.onScroll, this.props.debounceDelay));
     } else {

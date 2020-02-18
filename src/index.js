@@ -145,6 +145,7 @@ export class Select extends Component {
     }
 
     if (!prevState.dropdown && prevState.dropdown !== this.state.dropdown) {
+      this.updateSelectBounds();
       this.props.onDropdownOpen();
     }
 

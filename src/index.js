@@ -102,6 +102,12 @@ export class Select extends Component {
     this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     isomorphicWindow().addEventListener('resize', debounce(this.updateSelectBounds));
     
+
+    if (this.props.scrollContainer)  {
+      console.log('SELECT: scrollContainer');
+    } else {
+      console.log('SELECT: no scroll container');
+    }
     if (this.props.scrollContainer) {
       this.props.scrollContainer.addEventListener('scroll', debounce(this.onScroll));
     } else {
@@ -155,6 +161,14 @@ export class Select extends Component {
 
     if (this.props.portal && prevProps.portal !== this.props.portal) {
       this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
+    }
+
+    if (this.props.scrollContainer && prevProps.scrollContainer !== this.props.scrollContainer)  {
+      this.props.scrollContainer.addEventListener('scroll', debounce(this.onScroll));
+    }
+
+    if (!this.props.scrollContainer && prevProps.scrollContainer !== this.props.scrollContainer)  {
+      this.props.scrollContainer.removeEventListener('scroll', debounce(this.onScroll));
     }
   }
 

@@ -96,7 +96,12 @@ export class Select extends Component {
   componentDidMount() {
     this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     isomorphicWindow().addEventListener('resize', debounce(this.updateSelectBounds));
-    isomorphicWindow().addEventListener('scroll', debounce(this.onScroll));
+    
+    if (this.props.scrollContainer) {
+      this.props.scrollContainer.addEventListener('scroll', debounce(this.onScroll));
+    } else {
+      isomorphicWindow().addEventListener('scroll', debounce(this.onScroll));
+    }
 
     this.dropDown('close');
 
@@ -150,7 +155,11 @@ export class Select extends Component {
       'resize',
       debounce(this.updateSelectBounds, this.props.debounceDelay)
     );
-    isomorphicWindow().removeEventListener('scroll', debounce(this.onScroll, this.props.debounceDelay));
+    if (this.props.scrollContainer) {
+      this.props.scrollContainer.removeEventListener('scroll', debounce(this.onScroll, this.props.debounceDelay));
+    } else {
+      isomorphicWindow().removeEventListener('scroll', debounce(this.onScroll, this.props.debounceDelay));
+    }
   }
 
   onDropdownClose = () => {

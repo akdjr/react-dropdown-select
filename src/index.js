@@ -94,6 +94,11 @@ export class Select extends Component {
   }
 
   componentDidMount() {
+    if (this.props.portal)  {
+      console.log('SELECT: adding portal');
+    } else {
+      console.log('SELECT: no portal');
+    }
     this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     isomorphicWindow().addEventListener('resize', debounce(this.updateSelectBounds));
     
@@ -146,6 +151,10 @@ export class Select extends Component {
 
     if (!prevState.dropdown && prevState.dropdown !== this.state.dropdown) {
       this.props.onDropdownOpen();
+    }
+
+    if (this.props.portal && prevProps.portal !== this.props.portal) {
+      this.props.portal && this.props.portal.appendChild(this.dropdownRoot);
     }
   }
 

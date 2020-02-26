@@ -54,7 +54,8 @@ export class Select extends Component {
     required: PropTypes.bool,
     pattern: PropTypes.string,
     name: PropTypes.string,
-    backspaceDelete: PropTypes.bool
+    backspaceDelete: PropTypes.bool,
+    toggleOnOpen: PropTypes.bool
   };
 
   constructor(props) {
@@ -483,7 +484,7 @@ export class Select extends Component {
       <ClickOutside onClickOutside={(event) => this.dropDown('close', event)}>
         <ReactDropdownSelect
           onKeyDown={this.handleKeyDown}
-          onClick={(event) => this.dropDown('open', event)}
+          onClick={(event) => this.dropDown(this.props.toggleOnOpen ? 'toggle' : 'open', event)}
           onFocus={(event) => this.dropDown('open', event)}
           tabIndex={this.props.disabled ? '-1' : '0'}
           direction={this.props.direction}
